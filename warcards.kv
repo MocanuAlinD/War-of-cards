@@ -1,0 +1,377 @@
+#:import utils kivy.utils
+#:import Factory kivy.factory.Factory
+
+
+
+Cards:
+    name: 'cards_class'
+
+    FloatLayout:
+        id: all_widgets
+        size: root.size
+        pos: root.pos
+
+        canvas.before:
+            Color:
+                rgb: utils.get_color_from_hex('#498428')
+            Rectangle:
+                size: self.size
+                pos: self.pos
+        canvas:
+            Color:
+                rgb: utils.get_color_from_hex('#f9aa00')
+                # rgb: utils.get_color_from_hex('#027dc5')
+            Line:
+                points: [root.width, root.height/2,root.y,root.height/2]
+                width: root.height/150
+
+        FloatLayout:
+            id: float_p1
+            size_hint: 0.1, 0.43
+            pos_hint: {'x':0.6, 'top':0.46}
+
+        FloatLayout:
+            id: float_p2
+            size_hint: 0.1, 0.43
+            pos_hint: {'x':0.3, 'y':0.54}
+            canvas.before:
+                PushMatrix
+                Color:
+                    rgba: 1,0,0,0
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+                Rotate:
+                    angle: 180
+                    origin: self.center
+            canvas.after:
+                PopMatrix
+
+        Label:
+        # Remaining cards P2
+            id: score_p2
+            canvas.before:
+                PushMatrix
+                Color:
+                    rgba: 0,0,0,1
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+                Rotate:
+                    angle: 180
+                    origin: self.center
+            canvas.after:
+                PopMatrix
+            font_size: '15sp'
+            font_name: 'fonts/Fstiff.otf'
+            halign: 'center'
+            valign: 'center'
+            size_hint: 0.1,0
+            pos_hint: {'x':0.3, 'y':0.52}
+            color: 1,1,1,1
+            text: ''
+
+        Label:
+        # wars won P2
+            id: numbers_2
+            canvas.before:
+                PushMatrix
+                Color:
+                    rgba: 0,0,0,0
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+                Rotate:
+                    angle: 180
+                    origin: self.center
+            canvas.after:
+                PopMatrix
+            font_size: '20sp'
+            font_name: 'fonts/Fstiff.otf'
+            halign: 'center'
+            valign: 'center'
+            size_hint: 0,0
+            pos_hint: {'x':0.15, 'y':0.57}
+            color: utils.get_color_from_hex('#feda4c')
+            text: ''
+            markup: True
+
+
+        Label:
+        # Remaining cards P1
+            id: score_p1
+            canvas.before:
+                Color:
+                    rgba: 1,0,0,0
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+            font_size: '15sp'
+            font_name: 'fonts/Fstiff.otf'
+            halign: 'center'
+            valign: 'center'
+            size_hint: 0.1,0
+            pos_hint: {'x':0.6, 'y':0.48}
+            color: 1,1,1,1
+            text: ''
+
+        Label:
+        # wars won P1
+            id: numbers_1
+            font_size: '20sp'
+            font_name: 'fonts/Fstiff.otf'
+            halign: 'center'
+            valign: 'center'
+            size_hint: 0,0
+            color: utils.get_color_from_hex('#f3da4c')
+            pos_hint: {'x':0.85, 'y':0.43}
+            text: ''
+            markup: True
+
+        Button:
+        # Shuffle cards
+            id: but_add_cards
+            background_color: 0,0,0,0
+            size_hint: None, None
+            width: root.width/12 if root.height>root.width else root.height/12
+            height: self.width
+            pos_hint: {'center_x':0.5, 'center_y':0.5}
+            canvas:
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+                    source: 'icons/ShuffleCardsUp.png' if self.state=='normal' else 'icons/ShuffleCardsDown.png'
+            on_release: root.add_cards()
+
+
+
+        Button:
+        # Exit button
+            background_color: 0,0,0,0
+            size_hint: None, None
+            width: root.width/13 if root.height>root.width else root.height/13
+            height: self.width
+            pos_hint: {'x':0.02, 'center_y':0.5}
+            canvas:
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+                    source: 'icons/Exit.png'
+            on_release: app.stop()
+
+        Button:
+            id: move_on
+            background_color: 0,0,0,0
+            size_hint: None, None
+            width: root.width/9 if root.height>root.width else root.height/9
+            height: self.width
+            pos_hint: {'right':0.98, 'center_y':0.5}
+            disabled: True
+            canvas.before:
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+                    source: 'icons/PlayUp.png' if self.state=='normal' else 'icons/PlayDown.png'
+            # canvas.after:
+            #     Rectangle:
+            #         size: self.size
+            #         pos: self.pos
+            #         source: 'icons/PlayUp.png' if self.state=='normal' else 'icons/PlayDown.png'
+            on_release: 
+                root.move2next()
+                # root.anim(but_card1)
+                # root.anim_back(but_card1)
+
+
+        ImageButton:
+        # carte sus
+            id: but_card2
+            # source: 'boc/BackOfCards4.png'
+            source: root.default_back
+            size_hint: 0.57,0.45
+            pos_hint: {'right':0.98, 'top':0.99}
+            allow_stretch:True
+            keep_ratio: True
+            disabled: True
+            canvas.before:
+                Color:
+                    rgba: 1,0,0,0
+                PushMatrix
+                Rotate:
+                    angle: 180
+                    origin: self.center
+            canvas.after:
+                PopMatrix
+                Color:
+                    rgba: 0,0,0,0
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+            on_release: root.cards_p2()
+
+
+        ImageButton:
+        # carte jos
+            id: but_card1
+            canvas.after:
+                Color:
+                    rgba: 1,0,0,0
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+            source: 'boc/BackOfCards4.png' 
+            size_hint: 0.57, 0.45
+            pos_hint: {'x':0.02, 'y':0.01}
+            allow_stretch: True
+            keep_ratio: True
+            disabled: True
+            on_release: root.cards_p1()
+
+
+        Button:
+        # CHANGE BACKGROUND
+            id: but_background
+            background_normal: ''
+            background_color: 0,0,0,0
+            size_hint: None, None
+            width: root.width/13 if root.height>root.width else root.height/13
+            height: self.width
+            pos_hint: {'x':0.12, 'center_y':0.5}
+            # canvas.before:
+            #     Rectangle:
+            #         size: self.size
+            #         pos: self.pos
+            #         source: 'icons/but_backofcards.png'
+            canvas.after:
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+                    source: 'icons/but_backofcards.png'
+            on_release: root.new_back()
+
+        Button:
+        # CHANGE NUMBER OF CARDS
+            id: but_number_cards
+            # background_normal: ''
+            background_color: 0,0,0,0
+            size_hint: None, None
+            width: root.width/13 if root.height>root.width else root.height/13
+            height: self.width
+            pos_hint: {'x':0.22, 'center_y':0.5}
+            # canvas.before:
+            #     Rectangle:
+            #         size: self.size
+            #         pos: self.pos
+            #         source: 'icons/noofcards.png'
+            canvas.after:
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+                    source: 'icons/noofcards.png'
+            on_release: root.new_cards()
+
+        Button:
+        # QUESTION
+            background_color: 0,0,0,0
+            size_hint: None, None
+            width: root.width/13 if root.height>root.width else root.height/13
+            height: self.width
+            pos_hint: {'right':0.97, 'y':0.03}
+            canvas.after:
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+                    source: 'icons/question.png'
+            on_release: root.show_startup()
+
+
+
+        Label:
+            id: newgame1
+            text: ''
+            color: utils.get_color_from_hex('#f1414c')
+            size_hint: 0.55, 0.4
+            pos_hint: {'x':0.2, 'y':0}
+            font_size: root.width/10
+            font_name: 'fonts/Fworld.otf'
+            halign: 'center'
+            valign: 'center'
+            canvas.before:
+                PushMatrix
+                Color:
+                    rgba: 0,0,0,0
+                Rotate:
+                    angle: 25
+                    origin: self.center
+            canvas.after:
+                PopMatrix
+                Color:
+                    rgba: 0,0,0,0
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+
+        Label:
+            id: newgame2
+            text: ''
+            color: utils.get_color_from_hex('#f1414c')
+            size_hint: 0.55, 0.4
+            pos_hint: {'x':0.25, 'y':0.6}
+            font_size: root.width/10
+            font_name: 'fonts/Fworld.otf'
+            halign: 'center'
+            valign: 'center'
+            canvas.before:
+                PushMatrix
+                Color:
+                    rgba: 0,0,0,0
+                Rotate:
+                    angle: 205
+                    origin: self.center
+            canvas.after:
+                PopMatrix
+                Color:
+                    rgba: 0,0,0,0
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+
+        Label:
+        # battles P2
+            id: battle2
+            canvas.before:
+                PushMatrix
+                Color:
+                    rgba: 0,0,0,0
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+                Rotate:
+                    angle: 180
+                    origin: self.center
+            canvas.after:
+                PopMatrix
+            font_size: '20sp'
+            font_name: 'fonts/Fstiff.otf'
+            halign: 'center'
+            valign: 'center'
+            size_hint: 0,0
+            pos_hint: {'x':0.15, 'y':0.70}
+            color: utils.get_color_from_hex('#feda4c')
+            text: ''
+            markup: True
+
+        Label:
+        # battles P1
+            id: battle1
+            font_size: '20sp'
+            font_name: 'fonts/Fstiff.otf'
+            halign: 'center'
+            valign: 'center'
+            size_hint: 0,0
+            color: utils.get_color_from_hex('#f3da4c')
+            pos_hint: {'x':0.85, 'y':0.30}
+            text: ''
+            markup: True
+
+        # StartPop:
